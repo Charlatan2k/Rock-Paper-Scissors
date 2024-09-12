@@ -12,6 +12,7 @@ function getComputerChoice() {
 
 function getHumanChoice() {
   let humanChoice = prompt('Choose Rock Paper or Scissors');
+  humanChoice.charAt(0).toUpperCase();
   return humanChoice;
 }
 
@@ -37,6 +38,8 @@ function playGame() {
     ) {
       alert('You lost.. PC wins');
       computerScore += 1;
+    } else {
+      alert('Please right a valid choice');
     }
     alert('Your score is:' + humanScore + 'PC score is :' + computerScore);
   }

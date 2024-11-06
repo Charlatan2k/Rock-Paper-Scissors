@@ -1,52 +1,72 @@
-function getComputerChoice() {
-  let computerChoice = Math.round(Math.random() * 2 + 1);
-  if (computerChoice == 1) {
-    computerChoice = 'Rock';
-  } else if (computerChoice == 2) {
-    computerChoice = 'Paper';
-  } else {
-    computerChoice = 'Scissors';
-  }
-  return computerChoice;
-}
-
-function getHumanChoice() {
-  let humanChoice = prompt('Choose Rock Paper or Scissors');
-  humanChoice.charAt(0).toUpperCase();
-  return humanChoice;
-}
-
-function playGame() {
+document.addEventListener('DOMContentLoaded', () => {
   let computerScore = 0;
   let humanScore = 0;
-  function playRound() {
-    const humanChoice = getHumanChoice();
+
+  function getComputerChoice() {
+    const choices = ['Rock', 'Paper', 'Scissors'];
+    return choices[Math.floor(Math.random() * choices.length)];
+  }
+
+  function playRound(humanChoice) {
     const computerChoice = getComputerChoice();
     if (humanChoice === computerChoice) {
-      alert('It is a draw');
+      message.textContent = 'It is a draw';
     } else if (
-      (humanChoice == 'Scissors' && computerChoice == 'Paper') ||
-      (humanChoice == 'Paper' && computerChoice == 'Rock') ||
-      (humanChoice == 'Rock' && computerChoice == 'Scissors')
+      (humanChoice === 'Scissors' && computerChoice === 'Paper') ||
+      (humanChoice === 'Paper' && computerChoice === 'Rock') ||
+      (humanChoice === 'Rock' && computerChoice === 'Scissors')
     ) {
-      alert('You win!');
+      message.textContent = 'You win';
       humanScore += 1;
-    } else if (
-      (computerChoice == 'Rock' && humanChoice == 'Scissors') ||
-      (computerChoice == 'Paper' && humanChoice == 'Rock') ||
-      (computerChoice == 'Scissors' && humanChoice == 'Paper')
-    ) {
-      alert('You lost.. PC wins');
-      computerScore += 1;
     } else {
-      alert('Please right a valid choice');
+      message.textContent = 'You lost... PC Wins';
+      computerScore += 1;
     }
-    alert('Your score is:' + humanScore + 'PC score is :' + computerScore);
-  }
-  playRound();
-  playRound();
-  playRound();
-  playRound();
-}
 
-playGame();
+    if (humanScore == 5) {
+      message.textContent == 'You won the game!';
+      disableButtons();
+    } else if (computerScore == 5) {
+      message.textContent == 'PC won the game';
+      disableButtons();
+    }
+
+    updateScore();
+  }
+
+  // function for updating score
+  function updateScore() {
+    score.textContent = `Your score is: ${humanScore} | PC score is: ${computerScore}`;
+  }
+
+  // function for disabling buttons once one player reaches 5 points
+  function disableButtons() {
+    button.style.display = 'none';
+  }
+
+  // The main container for the game
+  const mainContent = document.getElementById('content');
+
+  // Score display element
+  const score = document.createElement('div');
+  score.textContent = `Your score is: ${humanScore} | PC score is: ${computerScore}`;
+
+  // Button elements for each choice
+  const choices = ['Rock', 'Paper', 'Scissors'];
+  choices.forEach((choice) => {
+    const button = document.createElement('button');
+    button.textContent = choice;
+
+    // Event listener for the buttons
+    button.addEventListener('click', () => playRound(choice));
+
+    // Append the button to the main container
+    mainContent.appendChild(button);
+  });
+
+  // Result message
+  const message = document.createElement('h1');
+
+  mainContent.appendChild(score);
+  mainContent.appendChild(message);
+});
